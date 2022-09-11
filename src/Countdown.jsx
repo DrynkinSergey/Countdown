@@ -1,6 +1,12 @@
 import React, { useEffect, useState } from 'react'
 
-export const Countdown = ({ deadline, timerName, id, removeHandler }) => {
+export const Countdown = ({
+	deadline,
+	timerDate,
+	timerName,
+	id,
+	removeHandler,
+}) => {
 	const [timer, setTimer] = useState({
 		days: 0,
 		hours: 0,
@@ -10,17 +16,15 @@ export const Countdown = ({ deadline, timerName, id, removeHandler }) => {
 	function startTimer() {
 		setTimer({
 			days: Math.floor(
-				(Date.parse(deadline) - Date.parse(new Date())) / (1000 * 60 * 60 * 24)
+				(deadline - Date.parse(new Date())) / (1000 * 60 * 60 * 24)
 			),
 			hours: Math.floor(
-				((Date.parse(deadline) - Date.parse(new Date())) / (1000 * 60 * 60)) %
-					24
+				(deadline - Date.parse(new Date()) / (1000 * 60 * 60)) % 24
 			),
 			minutes: Math.floor(
-				((Date.parse(deadline) - Date.parse(new Date())) / (1000 * 60)) % 60
+				((deadline - Date.parse(new Date())) / (1000 * 60)) % 60
 			),
-			seconds:
-				Math.floor((Date.parse(deadline) - Date.parse(new Date())) / 1000) % 60,
+			seconds: Math.floor((deadline - Date.parse(new Date())) / 1000) % 60,
 		})
 	}
 
@@ -32,15 +36,15 @@ export const Countdown = ({ deadline, timerName, id, removeHandler }) => {
 		}
 	}, [])
 	return (
-		<section className='neo group  flex mb-5 py-2 px-2 flex-col w-[95%]  italic  relative '>
+		<section className='neo group  flex mb-5 py-2 px-3 flex-col sm:w-[95vw] md:w-full italic  relative '>
 			<h1 className='text-2xl mb-6 text-indigo-900'>{timerName}</h1>
+
 			<div
 				className='absolute top-6 right-10 text-xl bg-red-500 h-5 w-5 rounded-md hidden group-hover:block cursor-pointer'
 				onClick={() => removeHandler(id)}
 			></div>
-			<h2 className='text-xl mb-6 text-indigo-900'>
-				{deadline.split('-').reverse().join('-')}
-			</h2>
+			<h2 className='text-2xl mb-6 text-indigo-900'>{timerDate}</h2>
+
 			<div className='flex justify-center gap-1'>
 				<div className='font-bold days flex flex-col-reverse font-serif  p-3'>
 					{timer.days < 10 ? `0${timer.days}` : timer.days}
